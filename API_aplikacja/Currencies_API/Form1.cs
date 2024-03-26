@@ -31,7 +31,7 @@ namespace Currencies_API
             if (currencies.Data.Any(d => d.timestamp == data.timestamp))
             {
                 //textBox3.Text = "istnieje";
-                //MessageBox.Show("Obiekt istnieje w bazie danych");
+                MessageBox.Show("Obiekt istnieje w bazie danych");
             }
             else
             {
@@ -47,40 +47,82 @@ namespace Currencies_API
             var value_base = Convert.ToDouble(textBox2.Text);
             var currency_base = comboBox1.SelectedItem;
             var currency_convert = comboBox2.SelectedItem;
-            
-            string rate_string = "";
-            switch (currency_convert)
+
+            string rate_base_string = "";
+            switch (currency_base)
             {
                 case "EUR":
-                    rate_string = temp.rates.EUR.ToString(); 
+                    rate_base_string = temp.rates.EUR.ToString();
                     break;
 
                 case "GBP":
-                    rate_string = temp.rates.GBP.ToString(); 
+                    rate_base_string = temp.rates.GBP.ToString();
                     break;
 
                 case "PLN":
-                    rate_string = temp.rates.PLN.ToString(); 
+                    rate_base_string = temp.rates.PLN.ToString();
                     break;
 
                 case "CZK":
-                    rate_string = temp.rates.CZK.ToString(); 
+                    rate_base_string = temp.rates.CZK.ToString();
                     break;
 
                 case "CHF":
-                    rate_string = temp.rates.CHF.ToString(); 
+                    rate_base_string = temp.rates.CHF.ToString();
                     break;
 
+                case "USD":
+                    rate_base_string = (1.00).ToString();
+                    break;
                 default:
                     break;
             }
-            var rate = Convert.ToDouble(rate_string);
-            textBox3.Text = (rate*value_base).ToString("0.00");
+
+            string rate_convert_string = "";
+            switch (currency_convert)
+            {
+                case "EUR":
+                    rate_convert_string = temp.rates.EUR.ToString(); 
+                    break;
+
+                case "GBP":
+                    rate_convert_string = temp.rates.GBP.ToString(); 
+                    break;
+
+                case "PLN":
+                    rate_convert_string = temp.rates.PLN.ToString(); 
+                    break;
+
+                case "CZK":
+                    rate_convert_string = temp.rates.CZK.ToString(); 
+                    break;
+
+                case "CHF":
+                    rate_convert_string = temp.rates.CHF.ToString(); 
+                    break;
+
+                case "USD":
+                    rate_convert_string = (1.00).ToString();
+                    break;
+                default:
+                    break;
+            }
+            if (rate_base_string == "USD")
+            {
+                var rate = Convert.ToDouble(rate_convert_string);
+                textBox3.Text = (rate * value_base).ToString("0.00");
+            }
+            else
+            {
+                var rate_base = Convert.ToDouble(rate_base_string);
+                var rate_convert = Convert.ToDouble(rate_convert_string);
+                textBox3.Text = (value_base*(rate_convert/rate_base)).ToString("0.00");
+            }
              
 
         }
 
-        private void textBox1_KeyPress(object sender, KeyPressEventArgs e)
+        private void textBox2_KeyPress(object sender, KeyPressEventArgs e)
         {
             if (!char.IsControl(e.KeyChar) && !char.IsDigit(e.KeyChar) &&
         (e.KeyChar != '.'))
@@ -94,7 +136,7 @@ namespace Currencies_API
             }
         }
 
-        private void textBox2_KeyPress(object sender, KeyPressEventArgs e)
+        private void textBox3_KeyPress(object sender, KeyPressEventArgs e)
         {
             if (!char.IsControl(e.KeyChar) && !char.IsDigit(e.KeyChar) &&
        (e.KeyChar != '.'))
