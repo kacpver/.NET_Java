@@ -15,11 +15,12 @@ namespace Currencies_API
             public int? timestamp { get; set; }
             public string? @base { get; set; }
             public Rates? rates { get; set; }
+            public string? date_cur { get; set; }
             
 
             public override string ToString()
             {
-                return $"Base: {@base}\r\nRates: {rates}\r\n";
+                return $"Date: {date_cur}\r\nBase: {@base}\r\nRates: {rates}\r\n";
             }
 
 

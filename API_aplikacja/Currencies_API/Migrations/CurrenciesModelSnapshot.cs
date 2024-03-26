@@ -26,12 +26,15 @@ namespace Currencies_API.Migrations
                     b.Property<string>("base")
                         .HasColumnType("TEXT");
 
+                    b.Property<string>("date_cur")
+                        .HasColumnType("TEXT");
+
                     b.Property<int?>("timestamp")
                         .HasColumnType("INTEGER");
 
                     b.HasKey("Id");
 
-                    b.ToTable("Data");
+                    b.ToTable("data");
                 });
 
             modelBuilder.Entity("Currencies_API.Rates", b =>

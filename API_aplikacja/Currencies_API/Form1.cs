@@ -24,24 +24,31 @@ namespace Currencies_API
             string selectdate = monthCalendar1.SelectionRange.Start.ToString("yyyy-MM-dd");
             string date = selectdate;
             string call = $"https://openexchangerates.org/api/historical/{date}.json?app_id={appID}";
-            string response = await client.GetStringAsync(call);
-            Data data = JsonSerializer.Deserialize<Data>(response);
-            textBox1.Text = data.ToString();
+            //string response = await client.GetStringAsync(call);
+            Data data = new Data();
+            //Data data = JsonSerializer.Deserialize<Data>(response);
+            //data.date_cur = date;
+            //textBox1.Text = data.ToString();
             //var temp = currencies.Data.FirstOrDefault();
-            if (currencies.Data.Any(d => d.timestamp == data.timestamp))
+            
+            if (currencies.data.Any(d => d.date_cur == selectdate))
             {
                 //textBox3.Text = "istnieje";
                 MessageBox.Show("Obiekt istnieje w bazie danych");
             }
             else
             {
+                string response = await client.GetStringAsync(call);
+                data = JsonSerializer.Deserialize<Data>(response);
+                data.date_cur = date;
+                textBox1.Text = data.ToString();
                 //textBox3.Text = "nie istnieje";
-                currencies.Data.Add(data);
+                currencies.data.Add(data);
                 currencies.SaveChanges();
             }
 
             //listBox1.DataSource = currencies.Data.ToList<Data>();
-            var temp = currencies.Data.FirstOrDefault(d => d.timestamp == data.timestamp);
+            var temp = currencies.data.FirstOrDefault(d => d.date_cur == selectdate);
             //textBox4.Text = temp.rates.EUR.ToString();
             //Konwersja i obliczenie kwoty wyjœciowej
             var value_base = Convert.ToDouble(textBox2.Text);
@@ -152,7 +159,7 @@ namespace Currencies_API
 
         private void button2_Click(object sender, EventArgs e)
         {
-            currencies.Data.RemoveRange(currencies.Data);
+            currencies.data.RemoveRange(currencies.data);
             currencies.SaveChanges();
         }
     }

@@ -11,17 +11,18 @@ namespace Currencies_API.Migrations
         protected override void Up(MigrationBuilder migrationBuilder)
         {
             migrationBuilder.CreateTable(
-                name: "Data",
+                name: "data",
                 columns: table => new
                 {
                     Id = table.Column<int>(type: "INTEGER", nullable: false)
                         .Annotation("Sqlite:Autoincrement", true),
-                    timestamp = table.Column<int>(type: "INTEGER", nullable: false),
-                    @base = table.Column<string>(name: "base", type: "TEXT", nullable: false)
+                    timestamp = table.Column<int>(type: "INTEGER", nullable: true),
+                    @base = table.Column<string>(name: "base", type: "TEXT", nullable: true),
+                    date_cur = table.Column<string>(type: "TEXT", nullable: true)
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_Data", x => x.Id);
+                    table.PrimaryKey("PK_data", x => x.Id);
                 });
 
             migrationBuilder.CreateTable(
@@ -39,9 +40,9 @@ namespace Currencies_API.Migrations
                 {
                     table.PrimaryKey("PK_Rates", x => x.Id);
                     table.ForeignKey(
-                        name: "FK_Rates_Data_Id",
+                        name: "FK_Rates_data_Id",
                         column: x => x.Id,
-                        principalTable: "Data",
+                        principalTable: "data",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Cascade);
                 });
@@ -54,7 +55,7 @@ namespace Currencies_API.Migrations
                 name: "Rates");
 
             migrationBuilder.DropTable(
-                name: "Data");
+                name: "data");
         }
     }
 }

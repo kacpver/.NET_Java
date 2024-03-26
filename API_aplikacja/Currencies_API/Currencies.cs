@@ -9,7 +9,7 @@ namespace Currencies_API
 {
     internal class Currencies : DbContext
     {
-        public DbSet<Data> Data {  get; set; }
+        public DbSet<Data> data {  get; set; }
         public DbSet<Rates> Rates { get; set; }
         public Currencies() 
         {
@@ -17,7 +17,7 @@ namespace Currencies_API
         }
         protected override void OnConfiguring(DbContextOptionsBuilder options)
         {
-            options.UseSqlite(@" Data Source = Curr.db");
+            options.UseSqlite(@" Data Source = DBcurr.db");
         }
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)

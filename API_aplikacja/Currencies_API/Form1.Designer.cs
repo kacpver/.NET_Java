@@ -53,10 +53,10 @@
             // 
             // textBox1
             // 
-            textBox1.Location = new Point(510, 70);
+            textBox1.Location = new Point(483, 70);
             textBox1.Multiline = true;
             textBox1.Name = "textBox1";
-            textBox1.Size = new Size(125, 207);
+            textBox1.Size = new Size(152, 207);
             textBox1.TabIndex = 1;
             // 
             // monthCalendar1
