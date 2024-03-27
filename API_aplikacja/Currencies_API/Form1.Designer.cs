@@ -56,13 +56,14 @@
             textBox1.Location = new Point(483, 70);
             textBox1.Multiline = true;
             textBox1.Name = "textBox1";
+            textBox1.ReadOnly = true;
             textBox1.Size = new Size(152, 207);
             textBox1.TabIndex = 1;
             // 
             // monthCalendar1
             // 
             monthCalendar1.Location = new Point(88, 70);
-            monthCalendar1.MaxDate = new DateTime(2024, 3, 26, 0, 0, 0, 0);
+            monthCalendar1.MaxDate = new DateTime(2024, 3, 27, 0, 0, 0, 0);
             monthCalendar1.MaxSelectionCount = 1;
             monthCalendar1.MinDate = new DateTime(2013, 1, 1, 0, 0, 0, 0);
             monthCalendar1.Name = "monthCalendar1";
@@ -80,6 +81,7 @@
             // 
             textBox3.Location = new Point(352, 349);
             textBox3.Name = "textBox3";
+            textBox3.ReadOnly = true;
             textBox3.Size = new Size(125, 27);
             textBox3.TabIndex = 4;
             textBox3.KeyPress += textBox3_KeyPress;
@@ -143,7 +145,7 @@
             Controls.Add(textBox1);
             Controls.Add(button1);
             Name = "Form1";
-            Text = "Form1";
+            Text = "Currency convert";
             ResumeLayout(false);
             PerformLayout();
         }

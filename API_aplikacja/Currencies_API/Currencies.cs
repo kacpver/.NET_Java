@@ -9,12 +9,13 @@ namespace Currencies_API
 {
     internal class Currencies : DbContext
     {
-        public DbSet<Data> data {  get; set; }
+        public DbSet<Data> Data { get; set; }
         public DbSet<Rates> Rates { get; set; }
-        public Currencies() 
-        {
-            Database.EnsureCreated();
-        }
+
+        //public Currencies()
+        //{
+        //    Database.EnsureCreated();
+        //}
         protected override void OnConfiguring(DbContextOptionsBuilder options)
         {
             options.UseSqlite(@" Data Source = DBcurr.db");
@@ -27,7 +28,5 @@ namespace Currencies_API
         .WithOne()
         .HasForeignKey<Rates>(r => r.Id);
         }
-
-    
     }
 }

@@ -7,25 +7,20 @@ using System.Threading.Tasks;
 
 namespace Currencies_API
 {
-    
     internal class Data
     {
-          
-            public int Id { get; set; }
-            public int? timestamp { get; set; }
-            public string? @base { get; set; }
-            public Rates? rates { get; set; }
-            public string? date_cur { get; set; }
-            
+        public int Id { get; set; }
+        public int? timestamp { get; set; }
+        public string? @base { get; set; }
+        public Rates rates { get; set; }
+        public string? date_cur { get; set; }
 
-            public override string ToString()
-            {
-                return $"Date: {date_cur}\r\nBase: {@base}\r\nRates: {rates}\r\n";
-            }
-
-
-        
+        public override string ToString()
+        {
+            return $"Date: {date_cur}\r\nBase: {@base}\r\nRates: {rates}\r\n";
+        }
     }
+
     internal class Rates
     {
         public int Id { get; set; }
