@@ -8,6 +8,8 @@ namespace Currencies_API
     {
         private HttpClient client;
         private Currencies currencies;
+        string currency_base = "";
+        string currency_convert = "";
 
         public Form1()
         {
@@ -26,7 +28,7 @@ namespace Currencies_API
 
             if (currencies.Data.Any(d => d.date_cur == selectdate))
             {
-                MessageBox.Show("Obiekt istnieje w bazie danych");
+                MessageBox.Show("Object already exist in database");
             }
             else
             {
@@ -40,12 +42,11 @@ namespace Currencies_API
             }
 
             var dateSelectedDate = currencies.Data.FirstOrDefault(d => d.date_cur == selectdate);
-            var currency_base = "";
-            var currency_convert = "";
+            
             //Konwersja i obliczenie kwoty wyjœciowej
             if (string.IsNullOrEmpty(textBox2.Text))
             {
-                MessageBox.Show("Proszê podaæ poprawne wartoœæi");
+                MessageBox.Show("Please provide the base value");
                 return;
             }
             var value_base = Convert.ToDouble(textBox2.Text);
@@ -90,8 +91,7 @@ namespace Currencies_API
                     break;
             }
 
-            if (dateSelectedDate.rates != null)
-            { }
+            
             {
                 switch (currency_convert)
                 {
@@ -168,6 +168,13 @@ namespace Currencies_API
         {
             currencies.Data.RemoveRange(currencies.Data);
             currencies.SaveChanges();
+        }
+
+        private void button3_Click(object sender, EventArgs e)
+        {
+            currency_convert = comboBox2.SelectedItem != null ? comboBox2.SelectedItem.ToString() : "PLN";
+            ChartForm chartForm = new ChartForm(currency_convert);
+            chartForm.ShowDialog(this);
         }
     }
 }
