@@ -46,7 +46,42 @@ namespace Multiply_matrix
             {
                 this.matrix[row, col] += one.matrix[row, i] * two.matrix[i, col];
             }
-            
+
         }
+
+        public void printMatrix(TextBox textBoxX)
+        {
+            for (int i = 0; i < this.matrix.GetLength(0); i++)
+            {
+                for (int j = 0; j < this.matrix.GetLength(1); j++)
+                {
+                    textBoxX.AppendText(this.matrix[i, j].ToString() + " ");
+                }
+                textBoxX.AppendText(Environment.NewLine);
+            }
+        }
+
+        //public void multiplication(Matrix one, Matrix two, int row, int col, int rowEnd, int colEnd)
+        //{
+
+        //    for (int i = row; i < one.matrix.GetLength(0); i++)
+        //    {
+        //        for (int j = col; j < two.matrix.GetLength(1); j++)
+        //        {
+        //            if (i == rowEnd && j == colEnd)
+        //            {
+        //                return;
+        //            }
+
+        //            for (int k = 0; k < one.matrix.GetLength(1); k++)
+        //            {
+        //                this.matrix[i, j] += one.matrix[i, k] * two.matrix[k, j];
+        //            }
+
+
+        //        }
+        //    }
+        //}
+
     }
 }

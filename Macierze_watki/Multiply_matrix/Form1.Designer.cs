@@ -42,6 +42,12 @@
             textBox8 = new TextBox();
             label4 = new Label();
             textBox9 = new TextBox();
+            textBox10 = new TextBox();
+            label5 = new Label();
+            textBox11 = new TextBox();
+            label6 = new Label();
+            textBox12 = new TextBox();
+            label7 = new Label();
             SuspendLayout();
             // 
             // textBox1
@@ -95,6 +101,7 @@
             textBox5.Location = new Point(46, 156);
             textBox5.Multiline = true;
             textBox5.Name = "textBox5";
+            textBox5.ReadOnly = true;
             textBox5.Size = new Size(344, 415);
             textBox5.TabIndex = 6;
             // 
@@ -103,6 +110,7 @@
             textBox6.Location = new Point(421, 156);
             textBox6.Multiline = true;
             textBox6.Name = "textBox6";
+            textBox6.ReadOnly = true;
             textBox6.Size = new Size(344, 415);
             textBox6.TabIndex = 7;
             // 
@@ -111,6 +119,7 @@
             textBox7.Location = new Point(795, 156);
             textBox7.Multiline = true;
             textBox7.Name = "textBox7";
+            textBox7.ReadOnly = true;
             textBox7.Size = new Size(344, 415);
             textBox7.TabIndex = 8;
             // 
@@ -135,7 +144,7 @@
             // 
             // textBox8
             // 
-            textBox8.Location = new Point(505, 84);
+            textBox8.Location = new Point(445, 83);
             textBox8.Name = "textBox8";
             textBox8.Size = new Size(86, 27);
             textBox8.TabIndex = 12;
@@ -143,11 +152,11 @@
             // label4
             // 
             label4.AutoSize = true;
-            label4.Location = new Point(528, 59);
+            label4.Location = new Point(469, 60);
             label4.Name = "label4";
-            label4.Size = new Size(42, 20);
+            label4.Size = new Size(63, 20);
             label4.TabIndex = 13;
-            label4.Text = "Seed";
+            label4.Text = "1st seed";
             // 
             // textBox9
             // 
@@ -156,11 +165,67 @@
             textBox9.Size = new Size(91, 27);
             textBox9.TabIndex = 14;
             // 
+            // textBox10
+            // 
+            textBox10.Location = new Point(555, 83);
+            textBox10.Name = "textBox10";
+            textBox10.Size = new Size(86, 27);
+            textBox10.TabIndex = 15;
+            // 
+            // label5
+            // 
+            label5.AutoSize = true;
+            label5.Location = new Point(572, 60);
+            label5.Name = "label5";
+            label5.Size = new Size(69, 20);
+            label5.TabIndex = 16;
+            label5.Text = "2nd seed";
+            // 
+            // textBox11
+            // 
+            textBox11.Location = new Point(781, 607);
+            textBox11.Name = "textBox11";
+            textBox11.ReadOnly = true;
+            textBox11.Size = new Size(115, 27);
+            textBox11.TabIndex = 17;
+            // 
+            // label6
+            // 
+            label6.AutoSize = true;
+            label6.Location = new Point(674, 610);
+            label6.Name = "label6";
+            label6.Size = new Size(101, 20);
+            label6.TabIndex = 18;
+            label6.Text = "Time(Thread):";
+            // 
+            // textBox12
+            // 
+            textBox12.Location = new Point(1024, 607);
+            textBox12.Name = "textBox12";
+            textBox12.ReadOnly = true;
+            textBox12.Size = new Size(115, 27);
+            textBox12.TabIndex = 19;
+            // 
+            // label7
+            // 
+            label7.AutoSize = true;
+            label7.Location = new Point(918, 610);
+            label7.Name = "label7";
+            label7.Size = new Size(103, 20);
+            label7.TabIndex = 20;
+            label7.Text = "Time(Parallel):";
+            // 
             // Form1
             // 
             AutoScaleDimensions = new SizeF(8F, 20F);
             AutoScaleMode = AutoScaleMode.Font;
             ClientSize = new Size(1217, 651);
+            Controls.Add(label7);
+            Controls.Add(textBox12);
+            Controls.Add(label6);
+            Controls.Add(textBox11);
+            Controls.Add(label5);
+            Controls.Add(textBox10);
             Controls.Add(textBox9);
             Controls.Add(label4);
             Controls.Add(textBox8);
@@ -197,5 +262,11 @@
         private TextBox textBox8;
         private Label label4;
         private TextBox textBox9;
+        private TextBox textBox10;
+        private Label label5;
+        private TextBox textBox11;
+        private Label label6;
+        private TextBox textBox12;
+        private Label label7;
     }
 }

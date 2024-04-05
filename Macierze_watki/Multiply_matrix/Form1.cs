@@ -8,74 +8,98 @@ namespace Multiply_matrix
         }
 
         private void button1_Click(object sender, EventArgs e)
-        {   
+        {
             int row1 = int.Parse(textBox1.Text);
             int col1 = int.Parse(textBox2.Text);
             int row2 = int.Parse(textBox3.Text);
             int col2 = int.Parse(textBox4.Text);
-            int seed = int.Parse(textBox8.Text);
+            int seed1 = int.Parse(textBox8.Text);
+            int seed2 = int.Parse(textBox10.Text);
             int n = int.Parse(textBox9.Text);
-            decimal DItemOnThread = ((decimal)row1 * col2) / n;
-            int IItemOnThread = Decimal.ToInt32(Math.Ceiling(DItemOnThread));
+            int IItemOnThread = Decimal.ToInt32(Math.Ceiling(((decimal)row1 * col2) / n));
             if (col1 == row2)
             {
-                Matrix one = new Matrix(row1, col1, true, seed);
-                Matrix two = new Matrix(row2, col2, true, seed);
+                Matrix one = new Matrix(row1, col1, true, seed1);
+                Matrix two = new Matrix(row2, col2, true, seed2);
                 Matrix result = new Matrix(row1, col2, false, 0);
-                //Thread[] threads = new Thread[n];
+                Thread[] threads = new Thread[n];
 
+                //one.printMatrix(textBox5);
+                //two.printMatrix(textBox6);
 
-                for (int i = 0; i < one.matrix.GetLength(0); i++)
+                for (int k = 0; k < n; k++)
                 {
-                    for (int j = 0; j < one.matrix.GetLength(1); j++)
+                    int rStart = (k * IItemOnThread) / col2;
+                    int cStart = (k * IItemOnThread) % col2;
+
+                    threads[k] = new Thread(() =>
                     {
-                        textBox5.AppendText(one.matrix[i, j].ToString() + " ");
+                        bool limit = false;
+                        int CounterCell = 0;
+                        for (int r = rStart; r < row1; r++)
+                        {
+                            for (int c = cStart; c < col2; c++)
+                            {
+                                if (CounterCell == IItemOnThread)
+                                {
+                                    CounterCell = 0;
+                                    limit = true;
+                                    break;
+                                }
+
+                                result.multiplication(one, two, r, c);
+                                CounterCell++;
+                            }
+                            cStart = 0;
+                            if (limit) break;
+                        }
                     }
-                    textBox5.AppendText(Environment.NewLine);
+                  );
                 }
+                var watch = System.Diagnostics.Stopwatch.StartNew();
+                foreach (Thread t in threads) { t.Start(); }
+                foreach (Thread t in threads) { t.Join(); }
+                watch.Stop();
+                textBox11.Text = watch.ElapsedMilliseconds.ToString();
+                //Parallel.For
+                var watchParallel = System.Diagnostics.Stopwatch.StartNew();
 
-                for (int i = 0; i < two.matrix.GetLength(0); i++)
+                Parallel.For(0, n, k =>
                 {
-                    for (int j = 0; j < two.matrix.GetLength(1); j++)
+                    int rStart = (k * IItemOnThread) / col2;
+                    int cStart = (k * IItemOnThread) % col2;
+                    bool limit = false;
+                    int CounterCell = 0;
+
+                    for (int r = rStart; r < row1; r++)
                     {
-                        textBox6.AppendText(two.matrix[i, j].ToString() + " ");
+                        for (int c = cStart; c < col2; c++)
+                        {
+                            if (CounterCell == IItemOnThread)
+                            {
+                                CounterCell = 0;
+                                limit = true;
+                                break;
+                            }
+
+                            result.multiplication(one, two, r, c);
+                            CounterCell++;
+                        }
+                        cStart = 0;
+                        if (limit) break;
                     }
-                    textBox6.AppendText(Environment.NewLine);
-                }
-                int CounterCell = 0;
-                int NumberOfThread = 0;
-                for (int i = 0; i < one.matrix.GetLength(0); i++)
-                {
-                    for (int j = 0; j < two.matrix.GetLength(1); j++)
-                    {
+                });
 
-                        //if (CounterCell == IItemOnThread)
-                        //{
-                        //    CounterCell = 0;
-                        //    threads[NumberOfThread].Start();
-                        //    NumberOfThread++;
-                        //}
-                        //threads[NumberOfThread] = new Thread(() =>
-                        result.multiplication(one, two, i, j);
-                        //CounterCell++;
-                    }         
-                }
+                watchParallel.Stop();
+                textBox12.Text = watchParallel.ElapsedMilliseconds.ToString();
 
-                //foreach (var x in threads)
-                //    x.Start();
+                
+            
+            //7 godzin póŸniej... Dzia³aaaaaaaaaaaaaa!!!!!!
 
-                //foreach (Thread x in threads)
-                //    x.Join();
+            //result.printMatrix(textBox7);
 
-                for (int i = 0; i < result.matrix.GetLength(0); i++)
-                {
-                    for (int j = 0; j < result.matrix.GetLength(1); j++)
-                    {
-                        textBox7.AppendText(result.matrix[i, j].ToString() + " ");
-                    }
-                    textBox7.AppendText(Environment.NewLine);
-                }
-            }
+        }
             else
             {
                 MessageBox.Show("Wrong matrix dimension");
