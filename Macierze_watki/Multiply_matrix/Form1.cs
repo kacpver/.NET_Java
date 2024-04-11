@@ -60,7 +60,7 @@ namespace Multiply_matrix
                 foreach (Thread t in threads) { t.Start(); }
                 foreach (Thread t in threads) { t.Join(); }
                 watch.Stop();
-                textBox11.Text = watch.ElapsedMilliseconds.ToString();
+                textBox11.Text = ((watch.Elapsed.TotalMicroseconds)/1000).ToString();
                 //Parallel.For
                 var watchParallel = System.Diagnostics.Stopwatch.StartNew();
 
@@ -91,7 +91,7 @@ namespace Multiply_matrix
                 });
 
                 watchParallel.Stop();
-                textBox12.Text = watchParallel.ElapsedMilliseconds.ToString();
+                textBox12.Text = ((watchParallel.Elapsed.TotalMicroseconds)/1000).ToString();
 
                 
             
