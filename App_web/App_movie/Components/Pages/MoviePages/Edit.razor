@@ -1,0 +1,125 @@
+﻿@page "/Movies/edit"
+@using Microsoft.AspNetCore.Components.Authorization
+@* @attribute [Authorize] *@
+@inject App_movie.Data.ApplicationDbContext DB
+@using App_movie.Components
+@inject NavigationManager NavigationManager
+@using Microsoft.EntityFrameworkCore
+
+<PageTitle>Edit</PageTitle>
+
+<h1>Edit</h1>
+<AuthorizeView>
+    <Authorized>
+        <h4>Movie</h4>
+        <hr />
+        @if (Movie is null)
+        {
+            <p><em>Loading...</em></p>
+        }
+        else
+        {
+            <div class="row">
+                <div class="col-md-4">
+                    <EditForm method="post" Model="Movie" OnValidSubmit="UpdateMovie" FormName="edit" Context="formContext">
+                        <DataAnnotationsValidator />
+                        <ValidationSummary />
+                        <input type="hidden" name="Movie.Id" value="@Movie.Id" />
+                        <div class="mb-3">
+                            <label for="title" class="form-label">Title:</label>
+                            <InputText id="title" @bind-Value="Movie.Title" class="form-control" />
+                            <ValidationMessage For="() => Movie.Title" class="text-danger" />
+                        </div>
+                        <div class="mb-3">
+                            <label for="description" class="form-label">Description:</label>
+                            <InputText id="description" @bind-Value="Movie.Description" class="form-control" />
+                            <ValidationMessage For="() => Movie.Description" class="text-danger" />
+                        </div>
+                        <div class="mb-3">
+                            <label for="relasedate" class="form-label">RelaseDate:</label>
+                            <InputDate id="relasedate" @bind-Value="Movie.RelaseDate" class="form-control" Format="dd/MM/yyyy" />
+                            <ValidationMessage For="() => Movie.RelaseDate" class="text-danger" />
+                        </div>
+                        
+                        <div class="mb-3">
+                            <label for="imageUrl" class="form-label">Image URL:</label>
+                            <InputText id="imageUrl" @bind-Value="Movie.ImageUrl" class="form-control" />
+                            <ValidationMessage For="() => Movie.ImageUrl" class="text-danger" />
+                        </div>                      
+                        <button type="submit" class="btn btn-primary">Save</button>
+                    </EditForm>
+                </div>
+            </div>
+            }
+    </Authorized>
+    <NotAuthorized>
+        <p><a href="/Account/Login">Log in</a> to edit</p>
+    </NotAuthorized>
+</AuthorizeView>
+
+
+
+<div>
+    <a href="/movies">Back to List</a>
+</div>
+
+@code {
+    [SupplyParameterFromQuery]
+    public int Id { get; set; }
+
+    [SupplyParameterFromForm]
+    public Movie? Movie { get; set; }
+
+    protected override async Task OnInitializedAsync()
+    {
+        Movie ??= await DB.Movie.FirstOrDefaultAsync(m => m.Id == Id);
+
+        if (Movie is null)
+        {
+            NavigationManager.NavigateTo("notfound");
+        }
+    }
+
+    // To protect from overposting attacks, enable the specific properties you want to bind to.
+    // For more details, see https://aka.ms/RazorPagesCRUD.
+    public async Task UpdateMovie()
+    {
+        var existingMovie = await DB.Movie.FindAsync(Movie!.Id);
+        // DB.Attach(Movie!).State = EntityState.Modified;
+        if (existingMovie != null)
+        {
+            existingMovie.Title = Movie!.Title; 
+            existingMovie.Description = Movie!.Description; 
+            existingMovie.RelaseDate = Movie!.RelaseDate;
+            existingMovie.ImageUrl = Movie!.ImageUrl;
+
+
+            try
+            {
+                await DB.SaveChangesAsync();
+            }
+            catch (DbUpdateConcurrencyException)
+            {
+                if (!MovieExists(Movie!.Id))
+                {
+                    NavigationManager.NavigateTo("notfound");
+                }
+                else
+                {
+                    throw;
+                }
+            }
+
+            NavigationManager.NavigateTo("/movies");
+        }
+        else
+        {
+            NavigationManager.NavigateTo("notfound");
+        }
+}
+
+    bool MovieExists(int id)
+    {
+        return DB.Movie.Any(e => e.Id == id);
+    }
+}

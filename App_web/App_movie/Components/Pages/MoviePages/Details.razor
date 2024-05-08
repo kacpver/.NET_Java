@@ -1,0 +1,90 @@
+﻿@page "/movies/details"
+@rendermode InteractiveServer
+@inject App_movie.Data.ApplicationDbContext DB
+@using App_movie.Components
+@inject NavigationManager NavigationManager
+@using Microsoft.EntityFrameworkCore
+
+<PageTitle>Details</PageTitle>
+
+<h1>Details</h1>
+
+<div>
+    <h4>Movie</h4>
+    <hr />
+    @if (movie is null)
+    {
+        <p><em>Loading...</em></p>
+    }
+    else
+    {
+        <dl class="row">
+            <dt class="col-sm-2">Title</dt>
+            <dd class="col-sm-10">@movie.Title</dd>
+            <dt class="col-sm-2">Description</dt>
+            <dd class="col-sm-10">@movie.Description</dd>
+            <dt class="col-sm-2">ReleaseDate</dt>
+            <dd class="col-sm-10">@movie.RelaseDate.Value.ToString("yyyy-MM-dd")</dd>
+            <dt class="col-sm-2">Rate</dt>
+            <dd class="col-sm-10">@movie.Rate</dd>
+            @if (!string.IsNullOrEmpty(movie.ImageUrl))
+            {
+                <dt class="col-sm-2">Image</dt>
+                <dd class="col-sm-10">
+                    <img src="@movie.ImageUrl" alt="Movie Image" />
+                </dd>
+            }
+            
+        </dl>
+        
+        <div>
+            <AuthorizeView>
+                <Authorized>
+            <h4>Add Rating</h4>
+            <form @onsubmit="AddRating">
+                <input type="number" @bind="newRating" step="1" min="0" max="10" />
+                <button type="submit">Add Rating</button>
+            </form>
+                </Authorized>
+            </AuthorizeView>
+            <a href="@($"/movies/edit?id={movie.Id}")">Edit</a> |
+            <a href="@($"/movies")">Back to List</a>
+        </div>
+           
+    }
+</div>
+
+@code {
+    Movie? movie;
+    float newRating;
+
+    [SupplyParameterFromQuery]
+    public int Id { get; set; }
+
+    protected override async Task OnInitializedAsync()
+    {
+        movie = await DB.Movie.FirstOrDefaultAsync(m => m.Id == Id);
+
+        if (movie is null)
+        {
+            NavigationManager.NavigateTo("notfound");
+        }
+    }
+
+    private async Task AddRating()
+    {
+        if (movie != null)
+        {
+            if (!(movie.SumOfRate.HasValue))
+            {
+                movie.SumOfRate = movie.Rate.Value;
+            }
+            movie.SumOfRate += newRating;
+            movie.CountRate++;
+
+            movie.Rate = movie.SumOfRate.Value / movie.CountRate.Value;
+
+            await DB.SaveChangesAsync();
+        }
+    }
+}
